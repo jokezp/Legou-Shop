@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TelPhone Shop 管理中心</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/admin.css">
+</head>
+<body>
+<h1>
+	<span class="action-span"><a href="{:url('admin/index/adminout')}"><b>官网首页</b></a></span>
+	<span class="action-span1"><a>TelPhone Shop 管理中心</a></span>
+	<div style="clear:both"></div>
+</h1>
+<hr width="100%" style="border: 0.5px dashed gray;"><br>
+<div class="col-lg-3 bs-docs-sidebar" style="width: 25%; float: left;">
+    <div class="list-group">
+        <div class="list-group-item active text-center" style="font-size: 25px;"><b>SHOP 管理</b></div>
+        <a href="{:url('admin/cat/catlist')}"  id="cat_ma" class="list-group-item  list-group-item-warning" title="更多"  style="font-size: 20px;"><b>栏目管理</b></a>
+        <a href="{:url('admin/good/goodlist')}"  id="good_ma" class="list-group-item  list-group-item-warning" title="更多"  style="font-size: 20px;"><b>商品管理</b></a>
+        <a href="#" id="order_ma" class="list-group-item  list-group-item-warning" title="更多"  style="font-size: 20px;"><b>订单管理</b></a>
+        <a href="#" id="user_ma" class="list-group-item  list-group-item-warning" title="更多"  style="font-size: 20px;"><b>账号管理</b></a>
+        <a href="{:url('admin/index/adminout')}" class="list-group-item  list-group-item-warning" style="font-size: 20px;"><b>退出登录</b></a>
+    </div>  
+</div>
+<div id="cat_ri" class="col-lg-9 bs-docs-sidebar">
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>栏目编号</th>
+			<th>栏目名称</th>
+			<th>上级栏目</th>
+			<th width="40%">栏目描述</th>
+		</tr>
+	</thead>
+	<tbody>
+		{foreach name="cats" item="v"}
+		<tr>
+			<td>2018000{$v.cat_id}</td>
+			<td>{$v.cat_name}</td>
+			{if condition="$v.parent_id==0"}
+			<td>无上级栏目</td>
+			{else /}
+				{foreach name="lists" item="l"}
+					{if condition="$l.cat_id == $v.parent_id"}
+						<td>{$l.cat_name}</td>
+					{/if}
+				{/foreach}
+			{/if}
+			<td>{$v.intro}</td>
+		</tr>
+		{/foreach}
+	</tbody>
+	</table>
+</div>
+
+<div id="good_ri" class="col-lg-9 bs-docs-sidebar hidden">
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>商品编号</th>
+			<th width="40%">商品名称</th>
+			<th>所属栏目</th>
+			<th>商品价格</th>
+		</tr>
+	</thead>
+	<tbody>
+		{foreach name="goods" item="g"}
+		<tr>
+			<td>2018{$g.goods_id}</td>
+			<td>{$g.goods_name}</td>
+			<td>{$g.cat_name}</td>
+			<td>{$g.shop_price}</td>
+		</tr>
+		{/foreach}
+	</tbody>
+	</table>
+</div>
+
+<div id="order_ri" class="col-lg-9 bs-docs-sidebar hidden">
+	<div style="overflow: auto; height: 300px;">
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>会员名</th>
+			<th>订单总价</th>
+			<th>备注</th>
+			<th>支付状态</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		{foreach name="order" item="o"}
+		<tr>
+			<td>{$o.username}</td>
+			<td>{$o.money|number_format=2}</td>
+			<td>{$o.note}</td>
+			<td>
+				{if condition="$o.paystatus == 0"}
+				未支付
+				{else /}
+				已支付
+				{/if}
+			</td>
+			<td><a href="#">发货</a></td>
+		</tr>
+		{/foreach}
+	</tbody>
+	</table>
+	</div>
+</div>
+
+<div id="user_ri" class="col-lg-9 bs-docs-sidebar hidden">
+	<div style="overflow: auto; height: 300px;">
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>会员名</th>
+			<th>邮箱</th>
+			<th>状态</th>
+			<th>上次登录</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		{foreach name="user" item="u"}
+		<tr>
+			<td>{$u.username}</td>
+			<td>{$u.email}</td>
+			<td>
+				{if condition="$u.state == 1"}
+					正常
+				{else /}
+					已冻结
+				{/if}
+			</td>
+			<td>
+				{if condition="$u.uplogin_time == 0"}
+					从未登录
+				{else /}
+					{$u.uplogin_time|date='Y-m-d',###}
+				{/if}
+			</td>
+			<td>
+				{if condition="$u.state == 1"}
+				<a href="{:url('admin/index/freeze',['user_id'=>$u.user_id])}">冻结</a>
+				{else /}
+				<a href="{:url('admin/index/recover',['user_id'=>$u.user_id])}">恢复</a>
+				{/if}
+			</td>
+		</tr>
+		{/foreach}
+	</tbody>
+	</table>
+	</div>
+</div>
+<div id="footer" style="clear: both;">
+	<i>
+		&copy; 2017-2018 XX网络科技有限公司&nbsp;&nbsp;版权所有
+	</i>
+</div>
+</body>
+<script type="text/javascript">
+	var cat = document.getElementById('cat_ma');
+	var good = document.getElementById('good_ma');
+	var order = document.getElementById('order_ma');
+	var user = document.getElementById('user_ma');
+
+	var cat_ri = document.getElementById('cat_ri');
+	var good_ri = document.getElementById('good_ri');
+	var order_ri = document.getElementById('order_ri');
+	var user_ri = document.getElementById('user_ri');
+
+	cat.onmouseover = function(){
+
+		cat_ri.className = 'col-lg-9 bs-docs-sidebar show';
+		good_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+		order_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+		user_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+	}
+	good.onmouseover = function(){
+
+		good_ri.className = 'col-lg-9 bs-docs-sidebar show';
+		cat_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+		order_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+		user_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+	}
+	order.onmouseover = function(){
+
+		order_ri.className = 'col-lg-9 bs-docs-sidebar show';
+		cat_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+		good_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+		user_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+	}
+	user.onmouseover = function(){
+
+		user_ri.className = 'col-lg-9 bs-docs-sidebar show';
+		cat_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+		good_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+		order_ri.className = 'col-lg-9 bs-docs-sidebar hidden';
+	}
+</script>
+</html>

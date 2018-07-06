@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>乐购网 | 账号注册</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/member.css">
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.js"></script>
+</head>
+<body>
+<!-- head -->
+<div class="head">
+    <div class="head-left">
+        <font style="color: black;">
+        	{if condition="check()"}
+                您好，<b style="color: red;">{$Think.cookie.legou_user} </b>。欢迎进入，爱的世界！
+            {else/}    
+                欢迎光临，乐购网！        
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userlogin')}" style="color: red;">亲，请登录</a>
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userreg')}">免费注册</a>
+            {/if}
+        </font>
+    </div>
+    <div class="head-right">
+        {if condition="check()"}
+        <span><img title="查看购物车" src="/static/images/home/shop_bike.png"><a href="{:url('index/order/shopcart')}">购物车</a></span>
+        {else/}
+        <span><img src="/static/images/home/shop_bike.png"><a href="{:url('index/member/userlogin')}">购物车</a></span>
+        {/if}
+        <span><img src="/static/images/admin/icon_output.gif">收藏夹</span>
+        <span>商品分类</span>
+        <span style="color: gray;">|</span>
+        <span><img src="/static/images/home/daohang.png">网站导航</span>
+        <span>联系客服</span>
+        <span><a href="{:url('admin/index/index')}" style="color: red;">后台入口</a></span>
+    </div>
+</div>
+<!-- main -->
+<div class="main">
+	<div id="top">
+		<div class="col-md-3 column">
+			<a href="{:url('index/index/index')}">
+				<img src="/static/images/home/legou.png" style="width: 180px;">
+			</a>
+		</div>
+		<div class="col-md-9 column">
+			<div id="tip" class="alert alert-dismissable alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+				{if condition="$msg eq 1"}
+					<strong>温馨提示：</strong>为确保您账户的安全及正常使用，请不要轻易透露自己的账号及密码。
+				{elseif condition="$msg eq 2"/}
+					<strong>注册成功，请<a href="{:url('index/member/userlogin')}">登录</a></strong>
+				{else /}
+					<strong>错误提示：</strong>{$msg}
+				{/if}
+			</div>
+		</div>
+	</div>
+	<div id="zhuti">
+		<div class="col-md-7 column">
+			<img src="/static/images/user/zhuti7.png" style="margin-top: 30px; margin-left: 60px;">
+		</div>
+		<div class="col-md-5 column">
+			<div id="reg-bottom">
+				<div id="form">
+					<div id="title">
+						用户注册
+					</div>
+					<div>
+						<form action="{:url('index/member/userreg')}" method="post" class="form-horizontal" role="form">
+							<div class="form-group">
+								<label class="col-sm-3 control-label" style="width: 58px; text-align: left;">
+									账号
+								</label>
+								<div class="col-sm-9">
+									<input type="text" name="username" class="form-control" placeholder="请输入会员名" 
+									{if condition="$odata neq []"}
+										value="{$odata.username}" 
+									{/if}>
+								</div>
+								<span><img id="icon"></span>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" style="width: 58px; text-align: left;">
+									邮箱
+								</label>
+								<div class="col-sm-9">
+									<input type="text" name="email" class="form-control" placeholder="请输入邮箱"
+									{if condition="$odata neq []"}
+										value="{$odata.email}" 
+									{/if}>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" style="width: 58px; text-align: left;">
+									密码
+								</label>
+								<div class="col-sm-9">
+									<input type="password" name="pwd" class="form-control" placeholder="请输入密码"
+									{if condition="$odata neq []"}
+										value="{$odata.pwd}" 
+									{/if}>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" style="width: 58px; text-align: left;">
+									确认密码
+								</label>
+								<div class="col-sm-9">
+									<input type="password" name="pwd_confirm" class="form-control" placeholder="请再次输入密码"
+									{if condition="$odata neq []"}
+										value="{$odata.pwd_confirm}" 
+									{/if}>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" style="width: 58px; text-align: left;">验证码</label>
+								<div class="col-sm-9">
+									<input type="text" name="verify" class="form-control" placeholder="请输入验证码">
+								</div>
+								<div style="margin-left: 74px;">
+									<!-- {:captcha_img()} -->
+									<img src="{:captcha_src()}" id="captcha" onclick="refreshCaptcha();" ondragstart="return false;">
+
+									<!-- 第一种刷新验证码的方法 -->
+									<!-- <a href="javascript:refreshCaptcha()" style="margin-left: 10px;">
+										<img title="看不清？换一张" src="/static/images/user/refresh.png">
+									</a> -->
+
+									<!-- 第二种刷新验证码的方法 -->
+									<a href="#">
+										<img title="看不清？换一张" src="/static/images/user/refresh.png" style="margin-left: 10px;margin-top: 5px;" onclick="refreshCaptcha();" ondragstart="return false;">
+									</a>
+
+								</div>
+							</div>
+							<div class="form-group">
+							    <div class="col-sm-12">
+							      <div class="checkbox">
+							        <label>
+							          <input type="checkbox" name="accept">我已经阅读并同意
+							          <a href="#">《最终用户协议》</a>
+							        </label>
+							      </div>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <div class="col-sm-10">
+							      <button type="submit" id="login" class="btn"><b>注 册</b></button>
+							    </div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- foot -->
+<div class="footer">
+<hr style="border: 1px solid #C0C0C0;">
+    <p>
+        <span><a href="#">关于我们</a> 丨 </span>
+        <span><a href="#">联系我们</a> 丨 </span>
+        <span><a href="#">联系客服</a> 丨 </span>
+        <span><a href="#">合作招商</a> 丨 </span>
+        <span><a href="#">商家帮助</a> 丨 </span>
+        <span><a href="#">营销中心</a> 丨 </span>
+        <span><a href="#">友情链接</a> 丨 </span>
+        <span><a href="#">风险监测</a> 丨 </span>
+        <span><a href="#">English Site</a></span>
+    </p>
+    <em>
+        &copy; 2017-2018 XX网络科技有限公司&nbsp;&nbsp;版权所有
+    </em>
+    <br><br>
+</div>
+</body>
+<script type="text/javascript">
+
+	document.getElementsByName('username')[0].onblur = function(){
+
+		var xhr = new XMLHttpRequest();
+		var url = './yzuser/un/'+this.value;
+		var img = document.getElementById('icon');
+
+		xhr.onreadystatechange = function(){
+			if(this.readyState == 4){
+				if(this.responseText == 0){
+					icon.src = '/static/images/admin/yes.gif';
+				}else{
+					icon.src = '/static/images/admin/no.gif';
+				}
+			}
+		}
+
+		xhr.open('GET', url, true);
+		xhr.send(null);
+	}
+
+
+
+
+
+
+	/**
+	* 第一种方法，刷新验证码
+	*/ 
+	// function refreshCaptcha(){
+
+	// 	var ts = Date.parse(new Date())/1000;
+
+	// 	// console.log(ts);
+	// 	$('#captcha').attr('src','/captcha?id='+ts);
+
+	// }
+
+
+	/**
+	* 第二种方法，刷新验证码
+	*/ 
+	function refreshCaptcha(){
+
+		var cap = document.getElementById('captcha');
+
+		cap.src = cap.src+'?'+Math.random();
+	}
+</script>
+</html>

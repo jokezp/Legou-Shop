@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>我的订单</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/shop.css">
+</head>
+<body>
+<!-- head -->
+<div class="head">
+    <div class="head-left">
+        <font style="color: black;">           
+            {if condition="check()"}
+                您好，<b style="color: red;">{$Think.cookie.legou_user} </b>。欢迎进入，爱的世界！
+            {else/}    
+                欢迎光临，乐购网！        
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userlogin')}" style="color: red;">亲，请登录</a>
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userreg')}">免费注册</a>
+            {/if}
+        </font>
+    </div>
+    <div class="head-right">
+        <span><img src="/static/images/home/shop_bike.png"><a href="{:url('index/order/shopcart')}">购物车({$scnum})</a></span>
+        <span><img src="/static/images/admin/icon_output.gif">收藏夹</span>
+        <span>商品分类</span>
+        <span style="color: gray;">|</span>
+        <span><img src="/static/images/home/daohang.png">网站导航</span>
+        <span>联系客服</span>
+        {if condition="check()"}
+        <span><a href="{:url('index/member/userlogout')}">退出登录</a></span>
+        {else/}
+        <span><a href="{:url('admin/index/index')}" style="color: red;">后台入口</a></span>
+        {/if}
+    </div>
+</div>
+<!-- main -->
+<div id="main">
+	<div id="top">
+        <a href="{:url('index/index/index')}">
+            <img src="/static/images/home/legou.png" style="width: 180px;">
+        </a>
+        <img src="/static/images/home/shoporder.png" >
+    </div>
+</div>
+<div id="content">
+	<form action="{:url('index/order/zhifu')}" method="post">
+		<table class="table table-bordered" id="orderinfo">
+			<caption><b>确认收货地址</b></caption>
+			<thead>
+				<tr>
+					<th>姓名</th>
+					<th>联系方式</th>
+					<th width="50%">详细地址</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="text" name="xm" style="width: 280px;" placeholder="请输入您的姓名" required="required"></td>
+					<td><input type="tel" name="mobile" maxlength="11" style="width: 280px;" placeholder="请输入您的联系方式" required="required"></td>
+					<td><input type="text" name="address" style="width: 590px;" placeholder="请输入您的收货地址" required="required"></td>
+				</tr>
+				<tr>
+					<td colspan="3"><b>备注：</b>
+						<input type="text" name="note" style="width: 1000px;" placeholder="如果有特殊情况，请在这里告诉我们">
+					</td>				
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered">
+		  <caption><b>确认订单信息</b></caption>
+		  <thead>
+		    <tr>
+		      <th width="30%">商品名称</th>
+		      <th width="20%">商品属性</th>
+		      <th>市场价</th>
+		      <th>单价</th>
+		      <th>数量</th>
+		      <th>小计</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<?php $id=[]; $name=[]; $price=[]; $num=[];?>
+		  	{foreach name="goods" item="g" key="k"}
+		  	<?php 	  		
+		  		$id[$k] 	= $g['goods_id'];
+		  		$name[$k] 	= $g['goods_name'];
+		  		$price[$k] 	= $g['shop_price'];
+		  		$num[$k] 	= $g['good_number'];
+		  		$key = $k;
+		  	?>
+		    <tr>
+		      <td><b>{$g.goods_name}</b></td>
+		      <td>颜色分类：黑色银框</td>
+		      <td>&yen;{$g.market_price}</td>
+		      <td><b>&yen;{$g.shop_price}</b></td>
+		      <td>{$g.good_number; $jiesheng+=($g.market_price-$g.shop_price) * $g.good_number}</td>
+		      <td style="color: red;"><b>&yen;{$g.shop_price * $g.good_number; $zongji+=$g.shop_price * $g.good_number}</b></td>
+		    </tr>
+		    {/foreach}
+		    <tr>
+		    	<td colspan="6" style="text-align: right; font-weight: bold;">
+		    		乐购网一共帮您节省了<span style="color: red;">&yen;{$jiesheng|number_format=2}</span>。
+		    		实付款：<span style="font-size: 25px; color: red;">&yen;{$zongji|number_format=2}</span>
+		    	</td>
+		    </tr>
+		  </tbody>
+		</table>
+		<div style="text-align: right;">
+			<input type="submit" id="sub" value="提 交 订 单">
+		</div>
+		<input type="hidden" name="username" value="{$Think.cookie.legou_user}">
+		<input type="hidden" name="money" value="{$zongji}">
+		<input type="hidden" name="goods_id" value="{$id|json_encode}">
+		<input type="hidden" name="goods_name" value='{$name|json_encode=JSON_UNESCAPED_UNICODE}'>
+		<input type="hidden" name="shop_price" value='{$price|json_encode}'>
+		<input type="hidden" name="goods_num" value="{$num|json_encode}">
+		<input type="hidden" name="key" value="{$key}">
+	</form>
+</div>
+<!-- foot -->
+<div class="footer">
+<hr style="border: 1px solid #C0C0C0;">
+    <p>
+        <span><a href="#">关于我们</a> 丨 </span>
+        <span><a href="#">联系我们</a> 丨 </span>
+        <span><a href="#">联系客服</a> 丨 </span>
+        <span><a href="#">合作招商</a> 丨 </span>
+        <span><a href="#">商家帮助</a> 丨 </span>
+        <span><a href="#">营销中心</a> 丨 </span>
+        <span><a href="#">友情链接</a> 丨 </span>
+        <span><a href="#">风险监测</a> 丨 </span>
+        <span><a href="#">English Site</a></span>
+    </p>
+    <em>
+        &copy; 2017-2018 XX网络科技有限公司&nbsp;&nbsp;版权所有
+    </em>
+    <br><br>
+</div>
+</body>
+</html>

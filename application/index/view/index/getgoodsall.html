@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TelPhone Shop - {$cat.cat_name}</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/goodsall.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/left-list.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/common.css">
+	<script type="text/javascript" src="/static/js/page.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.js"></script>
+</head>
+<body>
+<!-- head -->
+{/* 这是模板
+注释内容*/ }
+<div class="head">
+    <div class="head-left">
+        <font style="color: black;">
+        	{if condition="check()"}
+                您好，<b style="color: red;">{$Think.cookie.legou_user} </b>。欢迎进入，爱的世界！
+            {else/}    
+                欢迎光临，乐购网！        
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userlogin')}" style="color: red;">亲，请登录</a>
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userreg')}">免费注册</a>
+            {/if}
+        </font>
+    </div>
+    <div class="head-right">
+        {if condition="check()"}
+        <span><img title="查看购物车" src="/static/images/home/shop_bike.png"><a href="{:url('index/order/shopcart')}">购物车({$scnum})</a></span>
+        {else/}
+        <span><img src="/static/images/home/shop_bike.png"><a href="{:url('index/member/userlogin')}">购物车</a></span>
+        {/if}
+        <span><img src="/static/images/admin/icon_output.gif">收藏夹</span>
+        <span>商品分类</span>
+        <span style="color: gray;">|</span>
+        <span><img src="/static/images/home/daohang.png">网站导航</span>
+        <span>联系客服</span>
+        {if condition="check()"}
+        <span><a href="{:url('index/member/userlogout')}">退出登录</a></span>
+        {else/}
+        <span><a href="{:url('admin/index/index')}" style="color: red;">后台入口</a></span>
+        {/if}
+    </div>
+</div>
+<div id="top">
+	<div id="top-left">
+        <a href="{:url('index/index/index')}">
+        	<img src="/static/images/home/logo.jpg" alt="" style="width: 100%; height: 100%;">
+        </a>
+    </div>
+    <div id="top-right">
+    	<img src="/static/images/home/artical.png" alt="" style="margin-left: 50px;">
+    </div>
+</div>
+<div class="main">
+	<!-- main-left -->
+	<div class="main-left">
+        <div class="panel panel-primary">     
+            <div class="panel-heading">
+                <h4><b>栏 目 导 航</b></h4>
+            </div>
+            <div class="panel-body">
+                {foreach name="cats" item="c"}
+                    {if condition="$c.parent_id == 0"}
+                        <li id="list"><b>{$c.cat_name}</b></li>
+                    {else /}
+                        <li id="cont">
+                            {for start="0" end="$c.num"}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {/for}
+                            <a href="{:url('index/index/getgoodsall',['cat_id'=>$c.cat_id])}">{$c.cat_name}</a>
+                        </li>
+                    {/if}
+                {/foreach}
+            </div>
+        </div>
+        <div class="container" style="width: 100%; height: 350px;">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<h3 id="hezuo" class="text-center">
+						<b>合作伙伴</b>
+					</h3>
+					<div class="row clearfix">
+						{foreach name="brand" item="brand"}
+						<div class="col-md-4 column" style="margin-top: 20px;">
+							<img  src="/static/images/home/{$brand.logo}.jpg" alt="{$brand.name}" title="{$brand.name}" class="img-thumbnail" />
+						</div>
+						{/foreach}
+					</div>
+				</div>
+			</div>
+		</div> 
+    </div>
+    <!-- main-right -->
+    <div class="main-right">
+    	<div class="container">
+			<div class="row clearfix" style="height: 40px;">
+				<div class="col-md-6 column" style="height: 40px;">
+					<ul class="breadcrumb" style="padding-top: 10px; padding-left: 0px;">
+					<span>当前位置：</span>
+					<li id="bread">
+						<a href="{:url('index/index/index')}">首页</a>
+					</li>
+					{foreach name="fm" item="fm"}
+						{if condition="$fm.cat_id == $cat.cat_id"}
+						<li class="active">
+							{$fm.cat_name}
+						</li>
+						{elseif condition="$fm.parent_id == 0" /}
+						<li id="bread">
+							<a href="#">{$fm.cat_name}</a>
+						</li>
+						{else /}
+						<li id="bread">
+							<a href="{:url('index/index/getgoodsall',['cat_id'=>$fm.cat_id])}">{$fm.cat_name}</a>
+						</li>
+						{/if}
+					{/foreach}
+					</ul>
+				</div>
+				<div class="col-md-6 column" style="height: 40px;">
+					<ul class="nav nav-tabs pull-right"">
+						<li>
+							 <a href="#">综合排序</a>
+						</li>
+						<li>
+							 <a href="#">人气</a>
+						</li>
+						<li>
+							 <a href="#">销量</a>
+						</li>
+						<li>
+							 <a href="#">信用</a>
+						</li>
+						<li class="dropdown pull-right">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+							 	价格<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="{:url('index/index/getgoodsall',['cat_id'=>$cat.cat_id,'pri'=>'asc'])}">价格—由低到高</a>
+								</li>
+								<li>
+									<a href="{:url('index/index/getgoodsall',['cat_id'=>$cat.cat_id,'pri'=>'desc'])}">价格—由高到低</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row clearfix">
+				{foreach name="goods" item="g"}
+				<div id="goodall" class="col-md-4 column">
+					<a target="_blank" href="{:url('index/index/getgoodsdetail',['goods_id'=>$g.goods_id])}"><div class="row clearfix">
+						<div class="col-md-6 column">
+							<img alt="{$g.goods_name}" title="{$g.goods_name}" src="{$g.detail_img}" class="img-thumbnail" style="width: 150px; height: 200px;" />
+						</div>
+						<div class="col-md-6 column">
+							<li id="gname" title="{$g.goods_name}"><b>{$g.goods_name|mb_substr=0,12}...</b></li>
+							<li id="gbrief">{$g.goods_brief|mb_substr=0,10}...</li>
+							<br>
+							<li id="price"><b>&yen;{$g.shop_price}</b></li>
+							<li id="market"><del>&yen;{$g.market_price}</del></li>
+							<br>
+							<li id="gclick">浏览：{$g.click_count}</li>
+						</div>
+					</div></a>
+				</div>
+				{/foreach}				
+			</div>
+		</div>
+		<div style="text-align: center;">
+			<ul class="pagination">
+				{$page}
+				{if condition=" !isset($_GET['page']) "}
+					<script type="text/javascript">
+						document.getElementById('num_1').className = 'active';
+					</script>
+				{else /}
+					<script type="text/javascript">
+						document.getElementById('num_'+getQueryString('page')).className = 'active';
+					</script>
+				{/if}
+			</ul>	
+		</div>
+    </div>  
+
+</div>
+<!-- foot -->
+<div class="footer">
+<hr style="border: 1px solid #C0C0C0;">
+    <p>
+        <span><a href="#">关于我们</a> 丨 </span>
+        <span><a href="#">联系我们</a> 丨 </span>
+        <span><a href="#">联系客服</a> 丨 </span>
+        <span><a href="#">合作招商</a> 丨 </span>
+        <span><a href="#">商家帮助</a> 丨 </span>
+        <span><a href="#">营销中心</a> 丨 </span>
+        <span><a href="#">友情链接</a> 丨 </span>
+        <span><a href="#">风险监测</a> 丨 </span>
+        <span><a href="#">English Site</a></span>
+    </p>
+    <em>
+        &copy; 2017-2018 XX网络科技有限公司&nbsp;&nbsp;版权所有
+    </em>
+    <br><br>
+</div>
+</body>
+</html>

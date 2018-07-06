@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>乐购网 | 账号登录</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/member.css">
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.js"></script>
+</head>
+<body>
+<!-- head -->
+<div class="head">
+    <div class="head-left">
+        <font style="color: black;">
+        	{if condition="check()"}
+                您好，<b style="color: red;">{$Think.cookie.legou_user} </b>。欢迎进入，爱的世界！
+            {else/}    
+                欢迎光临，乐购网！        
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userlogin')}" style="color: red;">亲，请登录</a>
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userreg')}">免费注册</a>
+            {/if}
+        </font>
+    </div>
+    <div class="head-right">
+        {if condition="check()"}
+        <span><img title="查看购物车" src="/static/images/home/shop_bike.png"><a href="{:url('index/order/shopcart')}">购物车</a></span>
+        {else/}
+        <span><img src="/static/images/home/shop_bike.png"><a href="{:url('index/member/userlogin')}">购物车</a></span>
+        {/if}
+        <span><img src="/static/images/admin/icon_output.gif">收藏夹</span>
+        <span>商品分类</span>
+        <span style="color: gray;">|</span>
+        <span><img src="/static/images/home/daohang.png">网站导航</span>
+        <span>联系客服</span>
+        <span><a href="{:url('admin/index/index')}" style="color: red;">后台入口</a></span>
+    </div>
+</div>
+<!-- main -->
+<div class="main">
+	<div id="top">
+		<div class="col-md-3 column">
+			<a href="{:url('index/index/index')}">
+				<img src="/static/images/home/legou.png" style="width: 180px;">
+			</a>
+		</div>
+		<div class="col-md-9 column">
+			<div id="tip" class="alert alert-dismissable alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+				{if condition="$msg eq 1"}
+					<strong>温馨提示：</strong>为确保您账户的安全及正常使用，请不要轻易透露自己的账号及密码。
+				{else /}
+					<strong>错误提示：</strong>{$msg}
+				{/if}
+			</div>
+		</div>
+	</div>
+	<div id="zhuti">
+		<div class="col-md-3 column">
+			<img src="/static/images/user/zhuti1.png" style="margin-top: 20px; margin-left: 20px; width: 280px;">			
+			<img src="/static/images/user/zhuti5.png" style="margin-top: 50px; margin-left: 20px; width: 300px;">			
+		</div>
+		<div class="col-md-4 column">
+			<img src="/static/images/user/zhuti2.png" style="margin-top: 60px; margin-left: 50px; width: 400px;">	
+		</div>
+		<div class="col-md-5 column">
+			<div id="login-bottom">
+				<div id="form">
+					<div id="title">
+						会员登录
+					</div>
+					<div>
+						<form action="{:url('index/member/userlogin')}" method="post" class="form-horizontal" role="form">
+							<div class="form-group">								
+								<label class="col-sm-1 control-label">
+									<img title="账号" src="/static/images/user/username.png" ondragstart="return false;">
+								</label>
+								<div class="col-sm-10">						
+							    	<input type="text" name="user" class="form-control" placeholder="会员名"
+							    	{if condition="$Think.session.user"}
+							    		value="{$Think.session.user}"
+							    	{else /}
+							    		value="{$odata}"
+							    	{/if}>
+							    </div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">
+									<img title="密码" src="/static/images/user/password.png" ondragstart="return false;">
+								</label>
+								<div class="col-sm-10">
+							    	<input type="password" name="password" class="form-control" placeholder="密码"
+							    	{if condition="$Think.session.password"}
+							    		value="{$Think.session.password}"
+							    	{/if}>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <div class="col-sm-12">
+							      <div class="checkbox">
+							        <label>
+							          <input type="checkbox" name="re_me"
+							          {if condition="$Think.session.user"}
+							          	checked="checked"
+							          {/if}>请记住我
+							        </label>
+							      </div>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <div class="col-sm-10">
+							      <button type="submit" id="login" class="btn"><b>登 录</b></button>
+							    </div>
+							</div>
+							<div id="forget-pwd">
+								<a href="#">忘记密码</a>
+								<a href="#">忘记会员名</a>
+								<a href="{:url('index/member/userreg')}">用户注册</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- foot -->
+<div class="footer">
+<hr style="border: 1px solid #C0C0C0;">
+    <p>
+        <span><a href="#">关于我们</a> 丨 </span>
+        <span><a href="#">联系我们</a> 丨 </span>
+        <span><a href="#">联系客服</a> 丨 </span>
+        <span><a href="#">合作招商</a> 丨 </span>
+        <span><a href="#">商家帮助</a> 丨 </span>
+        <span><a href="#">营销中心</a> 丨 </span>
+        <span><a href="#">友情链接</a> 丨 </span>
+        <span><a href="#">风险监测</a> 丨 </span>
+        <span><a href="#">English Site</a></span>
+    </p>
+    <em>
+        &copy; 2017-2018 XX网络科技有限公司&nbsp;&nbsp;版权所有
+    </em>
+    <br><br>
+</div>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>乐购网 - 购！我喜欢</title>
+    <link rel="stylesheet" type="text/css" href="__CSS__/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/index.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/left-list.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/search.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/common.css">
+    <!-- 轮播 -->
+    <script type="text/javascript" src="__JS__/jquery.js"></script>
+    <script type="text/javascript" src="__JS__/bootstrap.js"></script>
+</head>
+<body>
+<!-- head -->
+<div class="head">
+    <div class="head-left">
+        <font style="color: black;">           
+            {if condition="check()"}
+                您好，<b style="color: red;">{$Think.cookie.legou_user} </b>。欢迎进入，爱的世界！
+            {else/}    
+                欢迎光临，乐购网！        
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userlogin')}" style="color: red;">亲，请登录</a>
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userreg')}">免费注册</a>
+            {/if}
+        </font>
+    </div>
+    <div class="head-right">
+        {if condition="check()"}
+        <span><img title="查看购物车" src="__STATIC__/images/home/shop_bike.png"><a href="{:url('index/order/shopcart')}">购物车({$scnum})</a></span>
+        {else/}
+        <span><img src="__STATIC__/images/home/shop_bike.png"><a href="{:url('index/member/userlogin')}">购物车</a></span>
+        {/if}
+        <span><img src="__STATIC__/images/admin/icon_output.gif">收藏夹</span>
+        <span>商品分类</span>
+        <span style="color: gray;">|</span>
+        <span><img src="__STATIC__/images/home/daohang.png">网站导航</span>
+        <span>联系客服</span>
+        {if condition="check()"}
+        <span><a href="{:url('index/member/userlogout')}">退出登录</a></span>
+        {else/}
+        <span><a href="javascript:void(0);" style="color: red;" data-toggle="modal" data-target="#myModal">后台入口</a></span>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">请输入后台管理员密码</h4>
+                    </div>
+                    <form action="{:url('admin/index/index')}" method="post">
+                        <div class="modal-body">密码：<input type="password" name="admin_pwd"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="submit" class="btn btn-primary">确认</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        {/if}
+    </div>
+</div>
+<!-- body -->
+<div class="main">
+    <div class="main-left">
+        <div id="logo">
+            <img src="__STATIC__/images/home/logo.jpg" alt="" style="width: 100%; height: 100%">       
+        </div>
+        <div class="panel panel-primary">     
+            <div class="panel-heading">
+                <h4><b>栏 目 导 航</b></h4>
+            </div>
+            <div class="panel-body">
+                {foreach name="cats" item="c"}
+                    {if condition="$c.parent_id == 0"}
+                        <li id="list"><b>{$c.cat_name}</b></li>
+                    {else /}
+                        <li id="cont">
+                            {for start="0" end="$c.num"}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {/for}
+                            <a href="{:url('index/index/getgoodsall',['cat_id'=>$c.cat_id])}">{$c.cat_name}</a>
+                        </li>
+                    {/if}
+                {/foreach}
+            </div>
+        </div>
+    </div>
+    <div class="main-right">
+        <div id="top">
+            <div id="ser_box">
+                <form action="{:url('index/index/search')}" method="post">          
+                    <input type="search" id="ipt" name="keyword" placeholder="Search...">
+                    <input type="submit" id="butt" name="" value="搜 索">
+                </form>
+                <div id="bot_box">
+                    <ul id="oul"></ul>
+                </div>
+                <div id="his">
+                    <span>最近搜索：</span>
+                    <span><a href="#">iphone8</a></span>&nbsp;&nbsp;
+                    <span><a href="#">华为荣耀7</a></span>&nbsp;&nbsp;
+                    <span><a href="#">三星MX</a></span>&nbsp;&nbsp;
+                    <span><a href="#">MEIZU BLUE</a></span>&nbsp;&nbsp;
+                    <span><a href="#">iphoneX</a></span>&nbsp;&nbsp;
+                </div>
+            </div>
+            <div id="wel_box">   
+                <img src="__STATIC__/images/user/zhuti5.png" style="width: 80%;">
+            </div>
+        </div>
+        <div class="content">
+            <div id="myCarousel" class="carousel slide">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>   
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="__STATIC__/images/home/first.jpg" alt="First slide" style="width: 1080px; height: 450px;" ondragstart="return false;">
+                    </div>
+                    <div class="item">
+                        <img src="__STATIC__/images/home/second.jpg" alt="Second slide" style="width: 1080px;height: 450px;" ondragstart="return false;">
+                    </div>
+                    <div class="item">
+                        <img src="__STATIC__/images/home/third.jpg" alt="Third slide" style="width: 1080px;height: 450px;" ondragstart="return false;">
+                    </div>
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <a class="carousel-control left" href="#myCarousel" 
+                    data-slide="prev"><br><br><br><br><br><br><br>&lsaquo;
+                </a>
+                <a class="carousel-control right" href="#myCarousel" 
+                    data-slide="next"><br><br><br><br><br><br><br>&rsaquo;
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="bottom">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h3>
+                        <strong style="color: #CC0033">丨热销商品</strong>
+                    </h3>
+                    <div class="row-fluid">
+                        {foreach name="hot" item="hot"}
+                        <div class="span4 hot">
+                            <p>
+                                 <a target="_blank" href="{:url('index/index/getgoodsdetail',['goods_id'=>$hot.goods_id])}"><img src="{$hot.detail_img}" class="img-circle" style="width: 150px; height: 150px;" /></a>
+                            </p>
+                            <p>
+                                <span style="font-size: 18px;">{$hot.goods_name|mb_substr=0,8}...</span>
+                            </p>
+                            <p>
+                                <span style="color: #708090; font-size: 15px">浏览：{$hot.click_count}</span>
+                            </p>                 
+                            <p>
+                                <span style="font-size: 23px; color: #CC0033"><b>&yen;{$hot.shop_price}</b></span>
+                                &nbsp;&nbsp;
+                                <span style="color: #708090;"><del>&yen;{$hot.market_price}</del></span>
+
+                            </p>
+                        </div>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bottom">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h3>
+                        <strong style="color: #FF6633">丨最新商品</strong>
+                    </h3>
+                    <div class="row-fluid">
+                        {foreach name="new" item="new"}
+                        <div class="span4 new">
+                            <p>
+                                 <a target="_blank" href="{:url('index/index/getgoodsdetail',['goods_id'=>$new.goods_id])}"><img src="{$new.detail_img}" class="img-rounded" style="width: 150px; height: 200px;" /></a>
+                            </p>
+                            <p>
+                                <span style="font-size: 18px;">{$new.goods_name|mb_substr=0,8}...</span>
+                            </p>
+                            <p>
+                                <span style="color: #708090; font-size: 15px">浏览：{$new.click_count}</span>
+                            </p>                 
+                            <p>
+                                <span style="font-size: 23px; color: #CC0033"><b>&yen;{$new.shop_price}</b></span>
+                                &nbsp;&nbsp;
+                                <span style="color: #708090;"><del>&yen;{$new.market_price}</del></span>
+
+                            </p>
+                        </div>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bottom">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h3>
+                        <strong style="color: #6A5ACD">丨每日推荐</strong>
+                    </h3>
+                    <div class="row-fluid">
+                        {foreach name="eday" item="eday"}
+                        <div class="span4 eday">
+                            <p>
+                                 <a target="_blank" href="{:url('index/index/getgoodsdetail',['goods_id'=>$eday.goods_id])}"><img src="{$eday.detail_img}" class="img-circle" style="width: 150px; height: 150px;" /></a>
+                            </p>
+                            <p>
+                                <span style="font-size: 18px;">{$eday.goods_name|mb_substr=0,8}...</span>
+                            </p>
+                            <p>
+                                <span style="color: #708090; font-size: 15px">浏览：{$eday.click_count}</span>
+                            </p>                 
+                            <p>
+                                <span style="font-size: 23px; color: #CC0033"><b>&yen;{$eday.shop_price}</b></span>
+                                &nbsp;&nbsp;
+                                <span style="color: #708090;"><del>&yen;{$eday.market_price}</del></span>
+
+                            </p>
+                        </div>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- foot -->
+<div class="footer">
+<hr style="border: 1px solid #C0C0C0;">
+    <p>
+        <span><a href="#">关于我们</a> 丨 </span>
+        <span><a href="#">联系我们</a> 丨 </span>
+        <span><a href="#">联系客服</a> 丨 </span>
+        <span><a href="#">合作招商</a> 丨 </span>
+        <span><a href="#">商家帮助</a> 丨 </span>
+        <span><a href="#">营销中心</a> 丨 </span>
+        <span><a href="#">友情链接</a> 丨 </span>
+        <span><a href="#">风险监测</a> 丨 </span>
+        <span><a href="#">English Site</a></span>
+    </p>
+    <em>
+        &copy; 2017-2018 XX网络科技有限公司&nbsp;&nbsp;版权所有
+    </em>
+    <br><br>
+</div>
+<script type="text/javascript" src="__JS__/search.js"></script>
+</body>
+</html>

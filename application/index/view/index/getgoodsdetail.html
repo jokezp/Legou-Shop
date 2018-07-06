@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TelPhone Shop - {$good.goods_name}</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/detail.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/common.css">
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.js"></script>
+</head>
+<body>
+<!-- head -->
+<div class="head">
+    <div class="head-left">
+        <font style="color: black;">
+            {if condition="check()"}
+                您好，<b style="color: red;">{$Think.cookie.legou_user} </b>。欢迎进入，爱的世界！
+            {else/}    
+                欢迎光临，乐购网！        
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userlogin')}" style="color: red;">亲，请登录</a>
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userreg')}">免费注册</a>
+            {/if}
+        </font>
+    </div>
+    <div class="head-right">
+        {if condition="check()"}
+        <span>
+            <img title="查看购物车" src="/static/images/home/shop_bike.png">
+            <a href="{:url('index/order/shopcart')}">购物车(<font id="scnum">{$scnum}</font>)</a>
+        </span>
+        {else/}
+        <span><img src="/static/images/home/shop_bike.png"><a href="{:url('index/member/userlogin')}">购物车</a></span>
+        {/if}
+        <span><img src="/static/images/admin/icon_output.gif">收藏夹</span>
+        <span>商品分类</span>
+        <span style="color: gray;">|</span>
+        <span><img src="/static/images/home/daohang.png">网站导航</span>
+        <span>联系客服</span>
+        {if condition="check()"}
+        <span><a href="{:url('index/member/userlogout')}">退出登录</a></span>
+        {else/}
+        <span><a href="{:url('admin/index/index')}" style="color: red;">后台入口</a></span>
+        {/if}
+    </div>
+</div>
+<div id="top">
+	<div id="top-left">
+        <a href="{:url('index/index/index')}">
+        	<img src="/static/images/home/logo.jpg" alt="" style="width: 100%; height: 100%;">
+        </a>
+    </div>
+    <div id="top-right">
+    	<img src="/static/images/home/artical.png" alt="" style="margin-left: 50px;">
+    </div>
+    <div id="bread">
+		<div class="row-fluid">
+			<div class="span12">
+				<ul class="breadcrumb">
+					<span style="margin-left: 20px;">当前位置：</span>
+					<li>
+						<a href="{:url('index/index/index')}">首页</a>
+					</li>
+					{foreach name="fm" item="fm"}
+						{if condition="$fm.parent_id == 0"}
+						<li>
+							<a href="#">{$fm.cat_name}</a>
+						</li>							
+						{else /}
+						<li>
+							<a href="{:url('index/index/getgoodsall',['cat_id'=>$fm.cat_id])}">{$fm.cat_name}</a>
+						</li>
+						{/if}
+					{/foreach}
+					<li class="active" style="color: #C0C0C0">
+						{$good.goods_name}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="main">
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-md-5 column" style="padding-top: 30px; padding-left: 90px;" >
+                <img alt="{$good.goods_name}" title="{$good.goods_name}" src="{$good.detail_img}" class="img-thumbnail" style="width: 350px; height: 400px;" ondragstart="return false;"/>
+                <li>
+                    <span id="share" style="margin-left: 10px;"><a href="#"><img src="/static/images/home/share.png"> 分享</a></span>
+                    <span id="share" style="margin-left: 10px;"><a href="#"><img src="/static/images/home/shou.png"> 收藏</a></span>
+                    <span id="share" style="margin-left: 200px;"><a href="#">举报</a></span>
+                </li>
+                
+            </div>
+            <div class="col-md-5 column" style="padding-top: 30px;">
+                <form action="" name="pay" method="post">
+                    <li>
+                        <span style="font-size: 28px;"><b>{$good.goods_name}</b></span>
+                    </li>
+                    <li>
+                        <span id="meta">价格</span>
+                        <span style="font-size: 24px; color: #FF0036;">&yen;<b>{$good.shop_price}</span></b>
+                        <span>&nbsp;&nbsp;</span>
+                        <span style="color: #838383;"><del>&yen;{$good.market_price}</del></span>
+                    </li>
+                    <li>
+                        <span id="meta">月销</span>
+                        <span style="color: #FF0036;"><b>{$good.click_count*0.4|ceil}</b></span>
+                    </li>
+                    <li>
+                        <span id="meta">运费</span>
+                        <span style="font-size: 13px; color: #333;">全国包邮(含港澳台)</span>
+                    </li>
+                    <li>
+                        <span id="meta">服务</span>
+                        <span>全国联保&nbsp;&nbsp;正品保证&nbsp;&nbsp;碎屏无忧&nbsp;&nbsp;七天无理由退换</span>
+                    </li>
+                    <li>
+                        <span id="meta">数量</span>
+                        <!-- IE FireFOX 不支持maxlength 实际可用js -->
+                        <input type="number" id="shop_number" name="shop_number" value="1" max="{$good.goods_number}" min="1" maxlength="8" title="请输入购买量" oninput="if(value.length>8) value=value.slice(0,8)" onkeydown="if(event.keyCode==13){event.keyCode=0;event.returnValue=false;}">
+                        <span>个&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span style="color: #838383;">库存{$good.goods_number}个</span>
+                    </li>
+                    <li>
+                        <span id="meta">上架</span>
+                        <span>{$good.add_time|date="Y-m-d",###}</span>
+                    </li>
+                    <li>
+                        <span id="meta">详情</span>
+                        <span>{$good.goods_brief}</span>
+                    </li>
+                    <li style="margin-left: 78px; padding-top: 20px;">
+                        <button id="shop" type="button" class="btn btn-lg" onclick="uporder();">立即购买</button>
+                        <button id="shopcar" type="button" class="btn btn-lg" onclick="addcart();">加入购物车</button>
+                    </li>
+                    <input type="hidden" id="gid" name="gid" value="{$good.goods_id}">
+                </form>
+            </div>
+            <div class="col-md-2 column" style="padding-top: 30px;border-left: 1px solid #C0C0C0;">
+                <span style="font-size: 14px; color: #838383; padding-left: 28px">——相似商品——</span>
+                <hr>
+                {foreach name="rel_goods" item="rel"}
+                <li style="padding-left: 35px;">
+                    <a href="{:url('index/index/getgoodsdetail',['goods_id'=>$rel.goods_id])}">
+                        <img alt="{$rel.goods_name}" title="{$rel.goods_name}" src="{$rel.thumb_img}" style="width: 100px; height: 100px;" ondragstart="return false;">
+                    </a>
+                    <p style="color: gray;">{$rel.goods_name|mb_substr=0,8}...</p>
+                </li>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+</div>
+<div id="comment">
+    <nav id="navbar-example" class="navbar navbar-default navbar-static" role="navigation">
+        <div class="collapse navbar-collapse bs-js-navbar-scrollspy">
+            <ul class="nav navbar-nav">
+                <li><a style="font-size: 20px; color: red;" href="#com"><b>用户评论</b></a></li>
+                <li><a style="font-size: 15px; color: red;" href="#mycom"><b>|</b></a></li>
+                <li><a style="font-size: 20px; color: red;" href="#mycom"><b>我来评论</b></a></li>
+            </ul>
+        </div>
+    </nav>
+    <div data-spy="scroll" data-target="#navbar-example" data-offset="0" style="overflow:auto;">
+        <h4 id="com" style="font-size: 18px; color: black; margin-bottom: 15px;"><b>用户评论</b></h4>
+        {if condition="$com"}
+            {foreach name="com" item="com"}
+            <div>
+                {if condition="$com.nm == 1"}
+                <img src="/static/images/home/girl.png" ondragstart="return false;">
+                <span><b>匿名用户：</b></span>
+                {else /}
+                <img src="/static/images/home/boy.png" ondragstart="return false;">
+                <span><b>{$com.username}：</b></span>
+                {/if}
+            </div>
+            <br>
+            <div style="font-size: 16px;">
+                <span>{$com.content}</span>
+            </div>
+            <div style="text-align: right;">
+                <span>{$com.com_time|date='Y-m-d',###}</span>
+            </div>
+            <hr>
+            {/foreach}
+        {else /}
+        <div style="height: 100px; text-align: center; line-height: 100px;">
+            <b>暂时没有用户评论！</b>
+        </div>
+        {/if}
+        <hr>
+        <h4 id="mycom" style="font-size: 18px; color: black; margin-bottom: 15px;"><b>我来评论</b></h4>
+        {if condition="check()"}
+        <form action="{:url('index/index/comment')}" method="post" role="form">
+          <div class="form-group">
+            <p><label>匿名评论：</label><input type="checkbox" name="wuming"></p>
+            <label>评论内容：</label>
+            <textarea name="content" class="form-control" rows="3" required="required"></textarea>
+          </div>
+          <input type="hidden" name="username" value="{$Think.cookie.legou_user}">
+          <input type="hidden" name="goods_id" value="{$good.goods_id}">
+          <button type="submit" class="btn btn-default">提交评论</button>
+        </form>
+        {else /}
+        <div style="height: 100px; text-align: center; line-height: 100px;">
+            <b>评论商品，请<a href="{:url('index/member/userlogin')}">登录！</a></b>
+        </div>
+        {/if}
+    </div>
+</div>
+<!-- foot -->
+<div class="footer">
+<hr style="border: 1px solid #C0C0C0;">
+    <p>
+        <span><a href="#">关于我们</a> 丨 </span>
+        <span><a href="#">联系我们</a> 丨 </span>
+        <span><a href="#">联系客服</a> 丨 </span>
+        <span><a href="#">合作招商</a> 丨 </span>
+        <span><a href="#">商家帮助</a> 丨 </span>
+        <span><a href="#">营销中心</a> 丨 </span>
+        <span><a href="#">友情链接</a> 丨 </span>
+        <span><a href="#">风险监测</a> 丨 </span>
+        <span><a href="#">English Site</a></span>
+    </p>
+    <em>
+        &copy; 2017-2018 XX网络科技有限公司&nbsp;&nbsp;版权所有
+    </em>
+    <br><br>
+</div>
+</body>
+<script type="text/javascript">
+    var num = document.getElementById('shop_number');
+    var gid = document.getElementById('gid');
+    var shop = document.getElementById('shop');
+    var shopcar = document.getElementById('shopcar');
+    var scnum = document.getElementById('scnum');
+
+    function uporder(){
+        <?php if(!check()){ ?>
+            alert('请先登录！');
+        <?php }else {   ?>     
+            document.pay.action = "{:url('index/order/uporder')}";
+            document.pay.submit();
+        <?php } ?>
+    }
+
+    function addcart(){
+        <?php if(!check()) { ?>
+            alert('请先登录！');
+        <?php }else { ?>
+            var xhr = new XMLHttpRequest();
+            var url = '/index/order/addcart';
+            var data = 'gid=' + gid.value + '&shop_number='+ num.value;
+
+            xhr.onreadystatechange = function(){
+                if(this.readyState == 4){
+                    if(this.responseText == 0){
+                        alert('商品无法加入购物车，请稍后再试！');
+                    } else if(this.responseText == 1){
+                        alert('商品已加入购物车！');
+                        this.onreadystatechange = function(){
+                            if(this.readyState == 4){
+                                scnum.innerHTML = this.responseText;
+                            }
+                        }
+                        this.open('get','/index/order/shopcarnum',true);
+                        this.send(null);
+                    }
+                }
+            }
+            xhr.open('post', url , true);
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            xhr.send(data);
+        <?php } ?>
+    }
+    
+    num.onkeyup = function(){
+    
+        var yu = num.value % 1;
+        if(num.value != ''){
+
+            shop.disabled = false;
+            shopcar.disabled = false;
+
+            if(num.value < 1 || yu != 0){
+
+                num.value = 1;
+            }
+
+            if(num.value > {$good.goods_number}){
+
+                num.value = {$good.goods_number};
+            }
+        } else{
+
+            num.value = '';
+            shop.disabled = true;
+            shopcar.disabled = true;
+        }
+    }
+</script>
+</html>

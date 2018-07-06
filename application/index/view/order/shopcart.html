@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>我的购物车</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/shop.css">
+</head>
+<body>
+<!-- head -->
+<div class="head">
+    <div class="head-left">
+        <font style="color: black;">           
+            {if condition="check()"}
+                您好，<b style="color: red;">{$Think.cookie.legou_user} </b>。欢迎进入，爱的世界！
+            {else/}    
+                欢迎光临，乐购网！        
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userlogin')}" style="color: red;">亲，请登录</a>
+                &nbsp;&nbsp;
+                <a href="{:url('index/member/userreg')}">免费注册</a>
+            {/if}
+        </font>
+    </div>
+    <div class="head-right">
+        <span><img src="/static/images/home/shop_bike.png"><a href="">购物车({$scnum})</a></span>
+        <span><img src="/static/images/admin/icon_output.gif">收藏夹</span>
+        <span>商品分类</span>
+        <span style="color: gray;">|</span>
+        <span><img src="/static/images/home/daohang.png">网站导航</span>
+        <span>联系客服</span>
+        {if condition="check()"}
+        <span><a href="{:url('index/member/userlogout')}">退出登录</a></span>
+        {else/}
+        <span><a href="{:url('admin/index/index')}" style="color: red;">后台入口</a></span>
+        {/if}
+    </div>
+</div>
+<!-- main -->
+<div id="main">
+    <div id="top">
+        <a href="{:url('index/index/index')}">
+            <img src="/static/images/home/legou.png" style="width: 180px;">
+        </a>
+        <img src="/static/images/home/shopcart.png" >
+    </div>
+    <div id="content">
+        <form action="{:url('index/order/jsorder')}" method="post">
+        <div class="row clearfix">
+            <div class="col-md-5 column">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                         <a href="#" style="color: #f40; font-size: 18px;">
+                            <b>全部商品 {$scnum}</b>
+                        </a>
+                    </li>
+                    <li class="disabled">
+                         <a href="#" style="font-size: 18px;"><b>促销商品 0</b></a>
+                    </li>
+                    <li class="disabled">
+                         <a href="#" style="font-size: 18px;"><b>降价商品 0</b></a>
+                    </li>
+                    <li>
+                        <a href="{:url('index/order/delall')}" style="font-size: 12px; color: red; margin-top: 10px; margin-left: 20px;" onclick="if(confirm('确定清空吗?') == false) return false">
+                            清空购物车
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-7 column" style="text-align: right;"> 
+                <span>合计（不含运费）：</span>
+                <span style="color: #f40; font-size: 18px;">&yen;</span>
+                <input id="price" type="button" value="0.00" disabled="disabled">
+                <input class="btn btn-sm" id="jiesuan" type="submit" value="结 算" disabled="disabled">
+            </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width: 12%">
+                  <input type="checkbox" id="quanxuan" > 全选
+              </th>
+              <th style="width: 45%;">商品信息</th>
+              <th>单价</th>
+              <th>数量</th>
+              <th>金额</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {foreach name="goods" item="v"}
+            <tr>
+              <td>
+                <input type="checkbox" id="shop_{$v.id}" name="{$v.id}">
+                <script type="text/javascript">
+                    var shop_{$v.id} = document.getElementById('shop_{$v.id}');
+                </script>
+                <a target="_blank" href="{:url('index/index/getgoodsdetail',['goods_id'=>$v.goods_id])}"><img title="{$v.goods_name}" src="{$v.thumb_img}"></a></td>
+              <td><a target="_blank" href="{:url('index/index/getgoodsdetail',['goods_id'=>$v.goods_id])}"><b>{$v.goods_name}：</b>{$v.goods_brief}</a></td>
+              <td><b>&yen;{$v.shop_price}</b></td>
+              <td>{$v.good_number}</td>
+              <td style="color: #f40;"><b>&yen;{$v.shop_price * $v.good_number;$zongjia += $v.shop_price * $v.good_number;}</b></td>
+              <td>
+                <a href="{:url('index/order/delshopcart',['delid'=>$v.id])}">移除</a>
+              </td>
+            </tr>
+            {/foreach}
+          </tbody>
+        </table>
+    </form>
+    </div>
+</div>
+<!-- foot -->
+<div class="footer">
+<hr style="border: 1px solid #C0C0C0;">
+    <p>
+        <span><a href="#">关于我们</a> 丨 </span>
+        <span><a href="#">联系我们</a> 丨 </span>
+        <span><a href="#">联系客服</a> 丨 </span>
+        <span><a href="#">合作招商</a> 丨 </span>
+        <span><a href="#">商家帮助</a> 丨 </span>
+        <span><a href="#">营销中心</a> 丨 </span>
+        <span><a href="#">友情链接</a> 丨 </span>
+        <span><a href="#">风险监测</a> 丨 </span>
+        <span><a href="#">English Site</a></span>
+    </p>
+    <em>
+        &copy; 2017-2018 XX网络科技有限公司&nbsp;&nbsp;版权所有
+    </em>
+    <br><br>
+</div>
+</body>
+<script type="text/javascript">
+    var shop_all = document.getElementById('quanxuan');
+    var price = document.getElementById('price');
+    var jiesuan = document.getElementById('jiesuan');
+    var order = document.getElementById('order');
+
+    window.onload = function(){
+
+        shop_all.checked = false;     
+
+        <?php foreach($goods as $v){ ?>
+            shop_{$v.id}.checked = false;
+        <?php } ?>
+        
+
+    }
+    
+    shop_all.onclick = function(){
+
+        if(shop_all.checked == true){
+
+            price.value = ({$zongjia}).toFixed(2);
+            jiesuan.disabled = false;
+
+            <?php foreach($goods as $v){ ?>
+                shop_{$v.id}.checked = true;
+            <?php } ?>
+
+        }
+
+        if(shop_all.checked == false){
+            
+            price.value = (0).toFixed(2);
+            jiesuan.disabled = true;
+            
+            <?php foreach($goods as $v){ ?>
+                shop_{$v.id}.checked = false;
+            <?php } ?>
+        }
+    }
+    <?php foreach($goods as $v){ ?>
+        shop_{$v.id}.onclick = function(){
+
+            if(shop_{$v.id}.checked == true){
+
+                price.value = (parseFloat(price.value) + {$v.shop_price * $v.good_number}).toFixed(2);
+                jiesuan.disabled = false;
+            }
+
+            if(shop_{$v.id}.checked == false){
+
+                price.value = (parseFloat(price.value) - {$v.shop_price * $v.good_number}).toFixed(2);
+                if(price.value <= 0){
+                    price.value = (0).toFixed(2);
+                    jiesuan.disabled = true;
+                }
+            }
+        }
+    <?php } ?>
+</script>
+</html>

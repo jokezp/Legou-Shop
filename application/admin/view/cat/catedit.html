@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TelPhone Shop 管理中心 - 编辑栏目</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/admin.css">
+</head>
+<body>
+<h1>
+	<span class="action-span"><a href="{:url('admin/cat/catlist')}"><b>栏目列表</b></a></span>
+	<span class="action-span1"><a href="{:url('admin/index/index')}">TelPhone Shop 管理中心</a></span>
+	<span class="action-span1">&nbsp;—&nbsp;编辑栏目</span>
+	<div style="clear:both"></div>
+</h1>
+	<form action="{:url('admin/cat/catedit',['cat_id'=>$old.cat_id])}" class="form-horizontal" role="form" method="post" >
+		<div class="form-group">
+		    <label  class="col-sm-2 control-label">栏目名称：</label>
+		    <div class="col-sm-10">
+		      <input type="text" name="cat_name" class="form-control" value="{$old.cat_name}" required="required" >
+		    </div>
+		</div>
+
+		<div class="form-group">
+   		 <label class="col-sm-2 control-label">上级栏目：</label>
+   		 <div class="col-sm-10">
+			<select name="parent_id" class="form-control">
+				<option value="0">无上级栏目</option>
+				{foreach name="list" item="v"}
+					{if condition="$v.cat_id == $old.parent_id"}
+						<option value="{$v.cat_id}" selected="selected">	
+							{for start="0" end="$v.num"}
+								&nbsp;&nbsp;
+							{/for}
+							{$v.cat_name}						
+						</option>
+					{else /}
+						<option value="{$v.cat_id}">	
+							{for start="0" end="$v.num"}
+								&nbsp;&nbsp;
+							{/for}
+							{$v.cat_name}						
+						</option>
+					{/if}
+				{/foreach}
+			</select>
+		 </div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">栏目描述：</label>
+			<div class="col-sm-10">
+				<textarea name="intro" class="form-control" rows="4" required="required">{$old.intro}</textarea>
+			</div>
+		</div>
+		<div id="sub" class="btn">
+			<input type="submit" name="" class="btn btn-primary" value="更改">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="reset" name="" class="btn btn-primary" value="重置">
+		</div>
+	</form>
+
+<div id="footer" style="margin-top: 100px;">
+	<i>
+		&copy; 2017-2018 XX网络科技有限公司&nbsp;&nbsp;版权所有
+	</i>
+</div>
+</body>
+</html>
